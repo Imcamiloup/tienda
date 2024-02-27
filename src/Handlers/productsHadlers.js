@@ -3,6 +3,8 @@ const {
   createProductController,
   getProductsByPriceController,
   getByAlphabeticallyController,
+  getProductsByTypeController,
+  getProductsByBrandController,
   getGenreController,
 } = require("../Controller/productsControllers");
 
@@ -66,10 +68,38 @@ const filterByGenreHandler = async(req, res)=>{
   }
 };
 
+const filterByTypeHandler = async (req, res) => {
+  const { filterByType } = req.params;
+
+  const productsFiltered = await getProductsByTypeController(filterByType)
+  try {
+    res.status(200).json(productsFiltered)
+  }
+  catch (error) {
+    res.status(417).send("Error filtering products by type");  // 417 Expectation Failed
+  }
+
+}
+
+const filterByBrandHandler = async (req, res) => {
+  const { filterByBrand } = req.params;
+
+  const productsFiltered = await getProductsByBrandController(filterByBrand)
+  try {
+    res.status(200).json(productsFiltered)
+  }
+  catch (error) {
+    res.status(417).send("Error filtering products by brand");  // 417 Expectation Failed
+  }
+}
+
+
 module.exports = {
   getAllProductsHandler,
   createProductsHandler,
   filterByPriceHandler,
   filterByAlphabeticallyHandler,
   filterByGenreHandler,
+  filterByTypeHandler,
+  filterByBrandHandler
 };

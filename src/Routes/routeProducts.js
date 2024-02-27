@@ -1,19 +1,23 @@
 const { Router } = require('express');
-const { getAllProductsHandler, createProductsHandler, filterByPriceHandler, filterByAlphabeticallyHandler, filterByGenreHandler,  } = require("../Handlers/productsHadlers")
+const { getAllProductsHandler, createProductsHandler, filterByPriceHandler, filterByAlphabeticallyHandler, filterByGenreHandler, filterByTypeHandler, filterByBrandHandler  } = require("../Handlers/productsHadlers")
 
 
 routeProducts = Router();
 
 
-routeProducts.get("/", getAllProductsHandler) 
+routeProducts.get("/", getAllProductsHandler)  //funciona
 
-routeProducts.post("/", createProductsHandler)
+routeProducts.post("/", createProductsHandler) //funciona
 
-routeProducts.get("/price/:orderType", filterByPriceHandler)
+routeProducts.get("/price/:orderType", filterByPriceHandler) //funciona
 
-routeProducts.get("/alphabetically/:orderAlphabetically", filterByAlphabeticallyHandler)
+routeProducts.get("/type/:filterByType", filterByTypeHandler)  //No funciona
 
-routeProducts.get("/genre/:typeGenre",filterByGenreHandler )
+routeProducts.get("/brand/:filterByBrand", filterByBrandHandler) //No funciona
+
+routeProducts.get("/alphabetically/:orderAlphabetically", filterByAlphabeticallyHandler) //funciona
+
+routeProducts.get("/genre/:typeGenre",filterByGenreHandler ) //funciona
 
 
 module.exports = {

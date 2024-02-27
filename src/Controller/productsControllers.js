@@ -1,6 +1,8 @@
 const { Product } = require("../db");
 
 let arrayFilter = [];
+let BooleanFilterType = false;
+let BooleanFilterBrand = false;
 
 const getAllProductsController = async () => {
   try {
@@ -101,10 +103,54 @@ const getGenreController = async (typeGenre) => {
   }
 };
 
+const getProductsByTypeController = async (filterType) => {
+  try {
+    const filterProductsByType = (type) => {
+      return arrayFilter.filter((product) => product.type === type);
+    };
+
+    if (BooleanFilterType === false) {
+      const filteredArray = filterProductsByType(filterType);
+      arrayFilter = filteredArray;
+      BooleanFilterType = true;
+      return arrayFilter;
+    }
+    else{
+      throw "type does not exist, please enter a valid type.";
+    }
+  } catch (error) {
+      return  error;
+    }
+  
+  }
+
+const getProductsByBrandController = async (filterBrand) => {
+  try {
+    const filterProductsByBrand = (brand) => {
+      return arrayFilter.filter((product) => product.brand === brand);
+    };
+
+    if (BooleanFilterBrand === false) {
+      const filteredArray = filterProductsByBrand(filterBrand);
+      arrayFilter = filteredArray;
+      BooleanFilterBrand = true;
+      return arrayFilter;
+    }
+    else{
+      throw "type does not exist, please enter a valid brand.";
+    }
+  } catch (error) {
+      return  error;
+    }
+  
+  }
+
 module.exports = {
   getAllProductsController,
   createProductController,
   getProductsByPriceController,
+  getProductsByTypeController,
+  getProductsByBrandController,
   getByAlphabeticallyController,
   getGenreController,
 };
