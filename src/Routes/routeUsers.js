@@ -10,7 +10,6 @@ routeUsers.put("/:userId", changeEmailHandler)
 
 routeUsers.delete("/:userId", deleteUsersHandler)
 
-
 module.exports = {
     routeUsers
 }
