@@ -34,10 +34,12 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Product, Users } = sequelize.models;
+const { Product, Users, Stocksize } = sequelize.models;
 
 Users.belongsToMany(Product, { through: "UsersProduct" });
 Product.belongsToMany(Users, { through: "UsersProduct" });
+Product.hasMany(Stocksize); // Un producto puede tener múltiples entradas de stock para diferentes tallas
+Stocksize.belongsTo(Product); // Cada entrada de stock pertenece a un producto específico
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

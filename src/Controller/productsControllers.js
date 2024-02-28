@@ -1,4 +1,4 @@
-const { Product } = require("../db");
+const { Product, Stocksize } = require("../db");
 
 let arrayFilter = [];
 let BooleanFilterType = false;
@@ -6,11 +6,13 @@ let BooleanFilterBrand = false;
 
 const getAllProductsController = async () => {
   try {
-    const responseDB = await Product.findAll();
-    arrayFilter = responseDB;
-    return responseDB;
+    const products = await Product.findAll({
+      include: [Stocksize], // Incluir información de stock
+    });
+    arrayFilter=products;
+    return products;
   } catch (error) {
-    console.error("Database error");
+    throw new Error("Error getting all products: " + error.message);
   }
 };
 
@@ -19,7 +21,6 @@ const createProductController = async ({
   name,
   price,
   brand,
-  size,
   type,
   color,
   genre,
@@ -30,7 +31,6 @@ const createProductController = async ({
       name,
       price,
       brand,
-      size,
       type,
       color,
       genre,
@@ -40,6 +40,9 @@ const createProductController = async ({
     throw new Error("Error creating product: " + error.message);
   }
 };
+
+
+const getProductsByPriceController =  (orderType) => {
 
 const changePriceController = async (productId, price) => {
   try {
@@ -58,6 +61,7 @@ const changePriceController = async (productId, price) => {
 
 
 const getProductsByPriceController = async (orderType) => {
+
   //arr.sort((a, b) => a - b)
   if (orderType === "ascendent") {
     const orderArray = arrayFilter.sort((a, b) => a.price - b.price);
@@ -72,7 +76,7 @@ const getProductsByPriceController = async (orderType) => {
   }
 };
 
-const getByAlphabeticallyController = async (orderAlphabetically) => {
+const getByAlphabeticallyController =  (orderAlphabetically) => {
   try {
     if (orderAlphabetically === "A-Z") {
       arrayFilter.sort((a, b) => a.name.localeCompare(b.name));
@@ -119,10 +123,10 @@ const getGenreController = async (typeGenre) => {
   }
 };
 
-const getProductsByTypeController = async (filterType) => {
+const getProductsByTypeController =  (filterType) => {
   try {
     const filterProductsByType = (type) => {
-      return arrayFilter.filter((product) => product.type === type);
+      return arrayFilter.filter((product) => product.type.toLowerCase() === type.toLowerCase());
     };
 
     if (BooleanFilterType === false) {
@@ -130,20 +134,18 @@ const getProductsByTypeController = async (filterType) => {
       arrayFilter = filteredArray;
       BooleanFilterType = true;
       return arrayFilter;
-    }
-    else{
+    } else {
       throw "type does not exist, please enter a valid type.";
     }
   } catch (error) {
-      return  error;
-    }
-  
+    return error;
   }
+};
 
-const getProductsByBrandController = async (filterBrand) => {
+const getProductsByBrandController =  (filterBrand) => {
   try {
     const filterProductsByBrand = (brand) => {
-      return arrayFilter.filter((product) => product.brand === brand);
+      return arrayFilter.filter((product) => product.brand.toLowerCase() === brand.toLowerCase());
     };
 
     if (BooleanFilterBrand === false) {
@@ -151,15 +153,13 @@ const getProductsByBrandController = async (filterBrand) => {
       arrayFilter = filteredArray;
       BooleanFilterBrand = true;
       return arrayFilter;
-    }
-    else{
+    } else {
       throw "type does not exist, please enter a valid brand.";
     }
   } catch (error) {
-      return  error;
-    }
-  
+    return error;
   }
+};
 
 module.exports = {
   getAllProductsController,
