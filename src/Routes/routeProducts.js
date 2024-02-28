@@ -1,10 +1,19 @@
 const { Router } = require('express');
 
+
+
+const { getAllProductsHandler, createProductsHandler, filterByPriceHandler, filterByAlphabeticallyHandler, filterByGenreHandler, filterByTypeHandler, filterByBrandHandler } = require("../Handlers/productsHadlers")
+const { searchBarHandler } = require("../Handlers/searchBarHandler")
+
+
 const { getAllProductsHandler, createProductsHandler, filterByPriceHandler, filterByAlphabeticallyHandler, filterByGenreHandler, filterByTypeHandler, filterByBrandHandler  } = require("../Handlers/productsHadlers")
 
 const {searchBarHandler} = require('../Handlers/searchBarHandler')
 
+
 const {addStockToProductHandler, sellProductHandler}= require ("../Handlers/stockHandlers")
+
+
 
 routeProducts = Router();
 
@@ -17,11 +26,27 @@ routeProducts.get("/price/:orderType", filterByPriceHandler) //✅
 
 routeProducts.get("/type/:filterByType", filterByTypeHandler)  //✅
 
+
 routeProducts.get("/brand/:filterByBrand", filterByBrandHandler) //✅
+
+
+
+
+routeProducts.get("/price/:orderType", filterByPriceHandler) 
 
 routeProducts.get("/alphabetically/:orderAlphabetically", filterByAlphabeticallyHandler) //✅
 
+
 routeProducts.get("/genre/:typeGenre",filterByGenreHandler ) //✅
+
+
+routeProducts.get("/price/:orderType", filterByPriceHandler) 
+
+routeProducts.get("/type/:filterByType", filterByTypeHandler)  
+
+
+routeProducts.get("/brand/:filterByBrand", filterByBrandHandler) 
+
 
 routeProducts.get("/search" , searchBarHandler) //✅
 

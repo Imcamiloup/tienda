@@ -1,6 +1,7 @@
 const {
   getAllProductsController,
   createProductController,
+  changePriceController,
   getProductsByPriceController,
   getByAlphabeticallyController,
   getProductsByTypeController,
@@ -18,7 +19,12 @@ const getAllProductsHandler = async (req, res) => {
 };
 
 const createProductsHandler = async (req, res) => {
+
   const { image, name, price, brand, type, color, genre } = req.body;
+
+
+  const { image, name, price, brand, size, type, color, genre } = req.body;
+  
 
   try {
     const responseController = await createProductController({
@@ -35,6 +41,17 @@ const createProductsHandler = async (req, res) => {
     res.status(417).send("Error creating product");
   }
 };
+const changePriceHandler = async (req, res) => {
+  const { productId } = req.params;
+  const { price } = req.body;
+  try{
+    const updateProduct  = await changePriceController(productId, price); 
+    res.status(200).json(updateProduct);
+  } catch (error) {
+    console.error("Error changing product price:", error.message);
+    res.status(417).send("Error changing price");
+  };
+}
 
 const filterByPriceHandler = async (req, res) => {
   const { orderType } = req.params;
@@ -93,6 +110,8 @@ const filterByBrandHandler = async (req, res) => {
 }
 
 
+
+
 module.exports = {
   getAllProductsHandler,
   createProductsHandler,
@@ -100,5 +119,6 @@ module.exports = {
   filterByAlphabeticallyHandler,
   filterByGenreHandler,
   filterByTypeHandler,
-  filterByBrandHandler
+  filterByBrandHandler,
+  changePriceHandler
 };
