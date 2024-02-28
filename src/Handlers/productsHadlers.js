@@ -18,7 +18,7 @@ const getAllProductsHandler = async (req, res) => {
 };
 
 const createProductsHandler = async (req, res) => {
-  const { image, name, price, brand, size, type, color, genre } = req.body;
+  const { image, name, price, brand, type, color, genre } = req.body;
 
   try {
     const responseController = await createProductController({
@@ -26,7 +26,6 @@ const createProductsHandler = async (req, res) => {
       name,
       price,
       brand,
-      size,
       type,
       color,
       genre,
