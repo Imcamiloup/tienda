@@ -2,6 +2,7 @@ const {
   getAllUsersControllers,
   createUsersControllers,
   changeEmailControllers,
+  deleteUsersControllers,
 } = require("../Controller/usersControllers");
 
 const getAllUsersHandler = async (req, res) => {
@@ -42,8 +43,20 @@ const changeEmailHandler = async (req, res) => {
   }
 };
 
+const deleteUsersHandler = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const deletedUser = await deleteUsersControllers(userId);
+    res.status(200).json( deletedUser);
+  } catch (error) {
+    console.error("Error deleting user:", error.message);
+    res.status(501).json({ error: "Error deleting user" });
+  }
+};
+
 module.exports = {
   getAllUsersHandler,
   createUsersHandler,
   changeEmailHandler,
+  deleteUsersHandler,
 };

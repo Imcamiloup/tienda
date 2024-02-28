@@ -43,8 +43,25 @@ const changeEmailControllers = async (userId, newEmail) => {
   }
 };
 
+const deleteUsersControllers = async (userId) => {
+  try{
+    const user = await Users.findByPk(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    else{
+    await user.destroy();
+    return [user.name ,"User deleted"];
+    }
+  }
+  catch (error) {
+    throw new Error("Error deleting user: " + error.message);
+  }
+};
+
 module.exports = {
   getAllUsersControllers,
   createUsersControllers,
   changeEmailControllers,
+  deleteUsersControllers
 };

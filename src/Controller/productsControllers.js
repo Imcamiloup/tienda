@@ -41,6 +41,22 @@ const createProductController = async ({
   }
 };
 
+const changePriceController = async (productId, price) => {
+  try {
+    const product = await Product.findByPk(productId);
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    product.price = price;
+    await product.save();
+    return "Price updated correctly: " + product.price;
+  } catch (error) {
+    throw new Error("Error updating product price: " + error.message);
+  }
+};
+
+
+
 const getProductsByPriceController = async (orderType) => {
   //arr.sort((a, b) => a - b)
   if (orderType === "ascendent") {
@@ -148,9 +164,11 @@ const getProductsByBrandController = async (filterBrand) => {
 module.exports = {
   getAllProductsController,
   createProductController,
+  changePriceController,
   getProductsByPriceController,
   getProductsByTypeController,
   getProductsByBrandController,
   getByAlphabeticallyController,
   getGenreController,
+  
 };
