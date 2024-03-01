@@ -7,24 +7,44 @@ const {
   getProductsByTypeController,
   getProductsByBrandController,
   getGenreController,
+  getProductsFilteredAndOrdered,
 } = require("../Controller/productsControllers");
 
 const getAllProductsHandler = async (req, res) => {
-  try {
-    const responseController = await getAllProductsController();
-    res.status(200).json(responseController);
-  } catch (error) {
-    res.status(404).send("Not find products");
+  if (req.query) {
+    const { name, genre, type, brand, orderBy, orderDirection } = req.query;
+    try {
+      if (genre && !["female", "male", "unisex"].includes(genre.toLowerCase()))
+        res.status(400).send("Genero no valido");
+      const products = await getProductsFilteredAndOrdered(
+        name,
+        genre,
+        type,
+        brand,
+        orderBy,
+        orderDirection
+      );
+      if (products) {
+        res.json(products);
+      } else {
+        res.status(404).send("no se hallaron productos");
+      }
+    } catch (error) {
+      console.error("Error searching products:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  } else {
+    try {
+      const responseController = await getAllProductsController();
+      res.status(200).json(responseController);
+    } catch (error) {
+      res.status(404).send("Not find products");
+    }
   }
 };
 
 const createProductsHandler = async (req, res) => {
-
   const { image, name, price, brand, type, color, genre } = req.body;
-
-
-  const { image, name, price, brand, size, type, color, genre } = req.body;
-  
 
   try {
     const responseController = await createProductController({
@@ -44,14 +64,14 @@ const createProductsHandler = async (req, res) => {
 const changePriceHandler = async (req, res) => {
   const { productId } = req.params;
   const { price } = req.body;
-  try{
-    const updateProduct  = await changePriceController(productId, price); 
+  try {
+    const updateProduct = await changePriceController(productId, price);
     res.status(200).json(updateProduct);
   } catch (error) {
     console.error("Error changing product price:", error.message);
     res.status(417).send("Error changing price");
-  };
-}
+  }
+};
 
 const filterByPriceHandler = async (req, res) => {
   const { orderType } = req.params;
@@ -74,51 +94,45 @@ const filterByAlphabeticallyHandler = async (req, res) => {
   }
 };
 
-const filterByGenreHandler = async(req, res)=>{
-  const {typeGenre} = req.params
+const filterByGenreHandler = async (req, res) => {
+  const { typeGenre } = req.params;
   const genreFilter = await getGenreController(typeGenre);
   try {
-    res.status(200).json(genreFilter)
-  } catch (error) {res.status(417).send("Error filtering products by genre")
-    
+    res.status(200).json(genreFilter);
+  } catch (error) {
+    res.status(417).send("Error filtering products by genre");
   }
 };
 
 const filterByTypeHandler = async (req, res) => {
   const { filterByType } = req.params;
 
-  const productsFiltered = await getProductsByTypeController(filterByType)
+  const productsFiltered = await getProductsByTypeController(filterByType);
   try {
-    res.status(200).json(productsFiltered)
+    res.status(200).json(productsFiltered);
+  } catch (error) {
+    res.status(417).send("Error filtering products by type"); // 417 Expectation Failed
   }
-  catch (error) {
-    res.status(417).send("Error filtering products by type");  // 417 Expectation Failed
-  }
-
-}
+};
 
 const filterByBrandHandler = async (req, res) => {
   const { filterByBrand } = req.params;
 
-  const productsFiltered = await getProductsByBrandController(filterByBrand)
+  const productsFiltered = await getProductsByBrandController(filterByBrand);
   try {
-    res.status(200).json(productsFiltered)
+    res.status(200).json(productsFiltered);
+  } catch (error) {
+    res.status(417).send("Error filtering products by brand"); // 417 Expectation Failed
   }
-  catch (error) {
-    res.status(417).send("Error filtering products by brand");  // 417 Expectation Failed
-  }
-}
-
-
-
+};
 
 module.exports = {
   getAllProductsHandler,
   createProductsHandler,
-  filterByPriceHandler,
-  filterByAlphabeticallyHandler,
-  filterByGenreHandler,
-  filterByTypeHandler,
-  filterByBrandHandler,
-  changePriceHandler
+  // filterByPriceHandler,
+  // filterByAlphabeticallyHandler,
+  // filterByGenreHandler,
+  // filterByTypeHandler,
+  // filterByBrandHandler,
+  changePriceHandler,
 };
