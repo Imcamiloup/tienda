@@ -8,6 +8,7 @@ const {
   filterByGenreHandler,
   filterByTypeHandler,
   filterByBrandHandler,
+  getBrandsHandler,
 } = require("../Handlers/productsHadlers");
 
 const { searchBarHandler } = require("../Handlers/searchBarHandler");
@@ -46,8 +47,8 @@ routeProducts.post("/addstock", addStockToProductHandler); //✅
 
 routeProducts.post("/sell", sellProductHandler); //✅
 
-//Probar la ruta de filtrado y ordenado
-routeProducts.get("/filtroyorden", filterAndOrderHandler);
+//Obtener lista de marcas
+routeProducts.get("/brands", getBrandsHandler);
 
 module.exports = {
   routeProducts,

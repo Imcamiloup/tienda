@@ -8,6 +8,7 @@ const {
   getProductsByBrandController,
   getGenreController,
   getProductsFilteredAndOrdered,
+  getBrandsController,
 } = require("../Controller/productsControllers");
 
 const getAllProductsHandler = async (req, res) => {
@@ -126,6 +127,16 @@ const filterByBrandHandler = async (req, res) => {
   }
 };
 
+//GET Brands
+const getBrandsHandler = async (req, res) => {
+  try {
+    const brandsList = await getBrandsController();
+    res.json(brandsList);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   getAllProductsHandler,
   createProductsHandler,
@@ -135,4 +146,5 @@ module.exports = {
   // filterByTypeHandler,
   // filterByBrandHandler,
   changePriceHandler,
+  getBrandsHandler,
 };

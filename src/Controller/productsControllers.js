@@ -91,6 +91,22 @@ const changePriceController = async (productId, price) => {
   }
 };
 
+const getBrandsController = async () => {
+  try {
+    let brands = await Product.findAll({
+      attributes: ["brand"], // Columna que quieres seleccionar
+      group: ["brand"], // Agrupa por esta columna para obtener valores únicos
+      //raw: true, // Devuelve solo los datos sin metadatos adicionales
+    });
+    brands = brands.map((item) => item.brand);
+    console.log(brands);
+
+    return brands;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 // const getProductsByPriceController = async (orderType) => {
 //   //arr.sort((a, b) => a - b)
 //   if (orderType === "ascendent") {
@@ -205,4 +221,5 @@ module.exports = {
   // getByAlphabeticallyController,
   // getGenreController,
   getProductsFilteredAndOrdered,
+  getBrandsController,
 };
