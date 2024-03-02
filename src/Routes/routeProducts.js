@@ -3,11 +3,6 @@ const { Router } = require("express");
 const {
   getAllProductsHandler,
   createProductsHandler,
-  filterByPriceHandler,
-  filterByAlphabeticallyHandler,
-  filterByGenreHandler,
-  filterByTypeHandler,
-  filterByBrandHandler,
   getBrandsHandler,
 } = require("../Handlers/productsHadlers");
 

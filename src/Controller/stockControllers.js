@@ -18,9 +18,8 @@ const addStockToProductController = async ({ productId, size, quantity }) => {
       stockEntry = await Stocksize.create({ size, quantity, ProductId: productId });
     }
      else {
-      // Si existe, actualizar la cantidad de stock existente
-      stockEntry.quantity += quantity;
-      await stockEntry.save();
+     
+      await stockEntry.increment('quantity',{by: quantity} )
     }
 
     return stockEntry;
@@ -43,11 +42,8 @@ const sellProduct = async (productId, size, quantitySold) => {
         throw new Error('No hay suficiente stock disponible para esta venta.');
       }
   
-      // Restar la cantidad vendida del stock disponible
-      stock.quantity -= quantitySold;
+     await stock.decrement('quantity',{by: quantitySold})
   
-      // Guardar los cambios en la base de datos
-      await stock.save();
   
       return 'Venta realizada exitosamente. Stock actualizado.';
     } catch (error) {
