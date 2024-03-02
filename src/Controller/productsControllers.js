@@ -1,14 +1,11 @@
 const { Product, Stocksize } = require("../db");
 const { Op } = require("sequelize");
 
-let arrayFilter = [];
-let BooleanFilterType = false;
-let BooleanFilterBrand = false;
 
 const getAllProductsController = async () => {
   try {
     const products = await Product.findAll({
-      include: [Stocksize], // Incluir información de stock
+      include: [Stocksize], 
     });
     arrayFilter = products;
     return products;
@@ -36,7 +33,6 @@ const getProductsFilteredAndOrdered = async (
   if (genre) where = { ...where, genre };
   if (type) where = { ...where, type };
   if (brand) where = { ...where, brand };
-  //   console.log(where);
   let order = [];
   if (orderBy && orderDirection) order = [[orderBy, orderDirection]];
   try {

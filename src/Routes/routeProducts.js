@@ -18,6 +18,7 @@ const {
 const filterAndOrderHandler = require("../Propuesta/productosFiltadosyOrdenados");
 //--------------------------------------------------
 
+
 routeProducts = Router();
 
 routeProducts.get("/", getAllProductsHandler); //✅
@@ -25,19 +26,6 @@ routeProducts.get("/", getAllProductsHandler); //✅
 routeProducts.get("/detail/:id", getProductByIdHandler); //✅
 
 routeProducts.post("/", createProductsHandler); //✅
-
-// routeProducts.get("/price/:orderType", filterByPriceHandler); //✅
-
-// routeProducts.get("/type/:filterByType", filterByTypeHandler); //✅
-
-// routeProducts.get("/brand/:filterByBrand", filterByBrandHandler); //✅
-
-// routeProducts.get(
-//   "/alphabetically/:orderAlphabetically",
-//   filterByAlphabeticallyHandler
-// ); //✅
-
-// routeProducts.get("/genre/:typeGenre", filterByGenreHandler); //✅
 
 routeProducts.get("/search", searchBarHandler); //✅
 
