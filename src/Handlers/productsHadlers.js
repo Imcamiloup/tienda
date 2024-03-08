@@ -4,6 +4,7 @@ const {
   changePriceController,
   getBrandsController,
   getProductsFilteredAndOrdered,
+  getProductByIdController,
 } = require("../Controller/productsControllers");
 
 const getAllProductsHandler = async (req, res) => {
@@ -69,9 +70,6 @@ const changePriceHandler = async (req, res) => {
   }
 };
 
-
-
-
 const getBrandsHandler = async (req, res) => {
   try {
     const brandsList = await getBrandsController();
@@ -81,10 +79,20 @@ const getBrandsHandler = async (req, res) => {
   }
 };
 
+const getProductByIdHandler = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await getProductByIdController(id);
+    res.json(product);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
 module.exports = {
   getAllProductsHandler,
   createProductsHandler,
   getBrandsHandler,
   changePriceHandler,
+  getProductByIdHandler,
 };

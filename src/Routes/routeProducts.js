@@ -4,6 +4,7 @@ const {
   getAllProductsHandler,
   createProductsHandler,
   getBrandsHandler,
+  getProductByIdHandler,
 } = require("../Handlers/productsHadlers");
 
 const { searchBarHandler } = require("../Handlers/searchBarHandler");
@@ -20,6 +21,8 @@ const filterAndOrderHandler = require("../Propuesta/productosFiltadosyOrdenados"
 routeProducts = Router();
 
 routeProducts.get("/", getAllProductsHandler); //✅
+
+routeProducts.get("/detail/:id", getProductByIdHandler); //✅
 
 routeProducts.post("/", createProductsHandler); //✅
 
