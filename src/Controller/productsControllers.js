@@ -107,7 +107,17 @@ const getBrandsController = async () => {
   }
 };
 
-
+const getProductByIdController = async (id) => {
+  try {
+    const product = await Product.findOne({
+      where: { id },
+      include: [Stocksize],
+    });
+    return product;
+  } catch (error) {
+    throw Error(error.message);
+  }
+};
 
 module.exports = {
   getAllProductsController,
@@ -115,4 +125,5 @@ module.exports = {
   changePriceController,
   getProductsFilteredAndOrdered,
   getBrandsController,
+  getProductByIdController,
 };
